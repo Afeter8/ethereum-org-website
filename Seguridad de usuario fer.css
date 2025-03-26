@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Sitio Web Descentralizado</title>
+    <!-- Incluir el CSS desde IPFS (o cualquier otra fuente descentralizada) -->
+    <link rel="stylesheet" href="https://ipfs.io/ipfs/Qm...css">
+</head>
+<body>
+    <h1>Bienvenido a mi sitio web descentralizado!</h1>
+    <p>Este sitio está hospedado de forma descentralizada en la blockchain mediante IPFS.</p>
+    
+    <!-- Insertar un iframe para visualizar contenido HTML descentralizado -->
+    <iframe src="https://ipfs.io/ipfs/Qm...html" width="100%" height="500px"></iframe>
+
+    <p>Este sitio web está protegido y distribuido a través de la tecnología blockchain.</p>
+
+    <!-- Incluir el JavaScript desde IPFS (o cualquier otra fuente descentralizada) -->
+    <script src="https://ipfs.io/ipfs/Qm...js"></script>
+
+    <!-- O directamente en el archivo HTML -->
+    <script>
+        // Puedes incluir todo el código JS directamente en este archivo.
+        console.log("Bienvenido a la Web Descentralizada");
+        // Aquí iría el código adicional de JavaScript
+    </script>
+</body>
+</html>
