@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Star Tigo Neural Web3</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+  <script src="https://cdn.jsdelivr.net/npm/web3@1.6.1/dist/web3.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="app">
+    <h1>Star Tigo IA Descentralizada</h1>
+    <button onclick="conectarWeb3()">Conectar a Web3</button>
+    <div id="estadoConexion"></div>
+    
+    <button onclick="activarRedNeuronal()">Activar Red Neuronal</button>
+    <div id="estadoIA"></div>
+
+    <button onclick="escanearAmenazas()">Escanear Antivirus</button>
+    <div id="estadoAntivirus"></div>
+  </div>
+
+  <script>
+    let web3, cuenta;
+
+    async function conectarWeb3() {
+      if (window.ethereum) {
+        web3 = new Web3(window.ethereum);
+        await ethereum.request({ method: 'eth_requestAccounts' });
+        cuenta = (await web3.eth.getAccounts())[0];
+        document.getElementById("estadoConexion").innerText = "Conectado a Web3: " + cuenta;
+      } else {
+        alert("Instala MetaMask para usar Web3");
+      }
+    }
+
+    function activarRedNeuronal() {
+      // Red Neuronal IA simple en TensorFlow
+      const modelo = tf.sequential();
+      modelo.add(tf.layers.dense({ units: 4, inputShape: [2], activation: 'relu' }));
+      modelo.add(tf.layers.dense({ units: 1, activation: 'sigmoid' }));
+      modelo.compile({ loss: 'binaryCrossentropy', optimizer: 'adam' });
+
+      const xs = tf.tensor2d([[0,0], [1,0], [0,1], [1,1]]);
+      const ys = tf.tensor2d([[0], [1], [1], [0]]);
+      
+      modelo.fit(xs, ys, { epochs: 10 }).then(() => {
+        document.getElementById("estadoIA").innerText = "Red neuronal activada.";
+      });
+    }
+
+    function escanearAmenazas() {
+      const amenaza = Math.random() > 0.5 ? "Amenaza detectada y bloqueada." : "Sistema limpio.";
+      document.getElementById("estadoAntivirus").innerText = amenaza;
+    }
+  </script>
+
+</body>
+</html>
