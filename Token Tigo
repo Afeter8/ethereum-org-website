@@ -1,0 +1,36 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract TigoCoin {
+    string public name = "TigoCoin";
+    string public symbol = "TGC";
+    uint8 public decimals = 18;
+    uint256 public totalSupply = 1000000 * (10 ** uint256(decimals));
+    mapping(address => uint256) public balanceOf;
+    mapping(address => mapping(address => uint256)) public allowance;
+
+    constructor() {
+        balanceOf[msg.sender] = totalSupply;
+    }
+
+    function transfer(address to, uint256 value) public returns (bool success) {
+        require(balanceOf[msg.sender] >= value, "Saldo insuficiente");
+        balanceOf[msg.sender] -= value;
+        balanceOf[to] += value;
+        return true;
+    }
+
+    function approve(address spender, uint256 value) public returns (bool success) {
+        allowance[msg.sender][spender] = value;
+        return true;
+    }
+
+    function transferFrom(address from, address to, uint256 value) public returns (bool success) {
+        require(balanceOf[from] >= value, "Saldo insuficiente");
+        require(allowance[from][msg.sender] >= value, "No autorizado");
+        balanceOf[from] -= value;
+        balanceOf[to] += value;
+        allowance[from][msg.sender] -= value;
+        return true;
+    }
+}
