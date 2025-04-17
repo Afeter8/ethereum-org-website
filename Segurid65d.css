@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Protección de Sistemas con IA</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #fff;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #5c6bc0;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .btn {
+            background-color: #5c6bc0;
+            color: white;
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            cursor: pointer;
+        }
+        .status {
+            margin-top: 20px;
+        }
+        .status p {
+            font-size: 1.2rem;
+        }
+        .error {
+            color: red;
+        }
+        .success {
+            color: green;
+        }
+        .warning {
+            color: orange;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sistema de Protección con IA</h1>
+    <div class="container">
+        <button class="btn" id="checkSecurityBtn">Comprobar Seguridad</button>
+        <button class="btn" id="blockAccessBtn">Bloquear Acceso</button>
+        <div class="status" id="status">
+            <p id="statusText">Estado: Sistema en espera</p>
+        </div>
+    </div>
+
+    <script>
+        let protectionEnabled = false;
+        let isThreatDetected = false;
+
+        // Simulación de un sistema de detección de amenazas mediante IA
+        function analyzeSystemSecurity() {
+            // Simulamos que la IA analiza patrones y detecta una posible amenaza
+            const threatProbability = Math.random(); // Genera un número aleatorio entre 0 y 1 para simular probabilidad
+            console.log(`Probabilidad de amenaza detectada: ${threatProbability}`);
+
+            if (threatProbability > 0.7) { // Si la probabilidad es mayor que 0.7, consideramos que hay una amenaza
+                isThreatDetected = true;
+                updateStatus('¡Amenaza detectada! Bloqueando acceso...', 'warning');
+                blockAccess();
+            } else {
+                isThreatDetected = false;
+                updateStatus('Sistema seguro. No se detectaron amenazas.', 'success');
+            }
+        }
+
+        // Bloquear el acceso al sistema cuando se detecta una amenaza
+        function blockAccess() {
+            if (isThreatDetected) {
+                // Simulación de bloqueo de acceso
+                updateStatus('Acceso bloqueado por seguridad', 'error');
+                protectionEnabled = false;
+            }
+        }
+
+        // Actualizar el estado en la UI
+        function updateStatus(message, type) {
+            const statusText = document.getElementById('statusText');
+            statusText.textContent = `Estado: ${message}`;
+            statusText.className = type;
+        }
+
+        // Botón de comprobación de seguridad
+        document.getElementById('checkSecurityBtn').addEventListener('click', function () {
+            updateStatus('Comprobando seguridad...', 'success');
+            analyzeSystemSecurity();
+        });
+
+        // Botón para bloquear el acceso manualmente
+        document.getElementById('blockAccessBtn').addEventListener('click', function () {
+            blockAccess();
+        });
+    </script>
+</body>
+</html>
