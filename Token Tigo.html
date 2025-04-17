@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TigoCoin | Sistema Descentralizado</title>
+  <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
+  <style>
+    body { font-family: sans-serif; background: #0d1117; color: #c9d1d9; padding: 2rem; }
+    button { padding: 0.5rem 1rem; margin: 0.5rem 0; cursor: pointer; }
+    input { margin: 0.5rem 0; padding: 0.5rem; }
+  </style>
+</head>
+<body>
+
+  <h1>TigoCoin | TGC</h1>
+  <p>Conexión segura y descentralizada con Web3</p>
+
+  <button onclick="conectarWallet()">Conectar Wallet</button>
+  <p id="cuenta"></p>
+  <p>Saldo: <span id="saldo">0</span> TGC</p>
+
+  <h3>Transferir TGC</h3>
+  <input type="text" id="destino" placeholder="Dirección destino" size="42">
+  <input type="number" id="cantidad" placeholder="Cantidad TGC">
+  <button onclick="transferir()">Enviar</button>
+
+  <script>
+    const contratoABI = [
+      {"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"type":"function"},
+      {"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"type":"function"},
+      {"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"type":"function"},
+      {"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"type":"function"},
+      {"constant":true,"inputs":[{"name":"_owner","type":"address"}],"name":"balanceOf","outputs":[{"name":"balance","type":"uint256"}],"type":"function"},
+      {"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[{"name":"success","type":"bool"}],"type":"function"}
+    ];
+
+    const contratoDireccion = "DIRECCION_CONTRATO"; // Reemplaza con la dirección de tu contrato desplegado
+
+    let web3, cuenta, contrato;
+
+    async function conectarWallet() {
+      if (window.ethereum) {
+        web3 = new Web3(window.ethereum);
+        await window.ethereum.request({ method: "eth_requestAccounts" });
+        const cuentas = await web3.eth.getAccounts();
+        cuenta = cuentas[0];
+        document.getElementById("cuenta").innerText = "Cuenta: " + cuenta;
+        contrato = new web3.eth.Contract(contratoABI, contratoDireccion);
+        actualizarSaldo();
+      } else {
+        alert("Instala MetaMask para continuar.");
+      }
+    }
+
+    async function actualizarSaldo() {
+      const saldo = await contrato.methods.balanceOf(cuenta).call();
+      const decimales = await contrato.methods.decimals().call();
+      const saldoConvertido = saldo / (10 ** decimales);
+      document.getElementById("saldo").innerText = saldoConvertido;
+    }
+
+    async function transferir() {
+      const destino = document.getElementById("destino").value;
+      const cantidad = document.getElementById("cantidad").value;
+      const decimales = await contrato.methods.decimals().call();
+      const cantidadFinal = web3.utils.toBN(cantidad * (10 ** decimales));
+
+      await contrato.methods.transfer(destino, cantidadFinal.toString()).send({ from: cuenta });
+      actualizarSaldo();
+      alert("Transferencia completada.");
+    }
+  </script>
+
+</body>
+</html>
