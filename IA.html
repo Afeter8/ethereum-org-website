@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tigo Start - Sistema Descentralizado</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #fff;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #5c6bc0;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .btn {
+            background-color: #5c6bc0;
+            color: white;
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            cursor: pointer;
+        }
+        .status {
+            margin-top: 20px;
+        }
+        .status p {
+            font-size: 1.2rem;
+        }
+        .error {
+            color: red;
+        }
+        .success {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tigo Start - Sistema Descentralizado</h1>
+    <div class="container">
+        <button class="btn" id="connectBtn">Conectar a Ethereum</button>
+        <button class="btn" id="uploadBtn">Subir Reporte a IPFS</button>
+        <div class="status" id="status">
+            <p id="statusText">Estado: Desconectado</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.ethers.io/lib/ethers-5.0.umd.min.js"></script>
+    <script src="https://unpkg.com/ipfs/dist/index.min.js"></script>
+    <script>
+        let provider;
+        let signer;
+        let ipfs;
+        let connected = false;
+
+        // Conectar a Ethereum (MetaMask o proveedor Web3)
+        document.getElementById('connectBtn').addEventListener('click', async function () {
+            if (typeof window.ethereum !== 'undefined') {
+                provider = new ethers.providers.Web3Provider(window.ethereum);
+                await provider.send("eth_requestAccounts", []);
+                signer = provider.getSigner();
+                connected = true;
+                updateStatus('Conectado a Ethereum', 'success');
+            } else {
+                updateStatus('MetaMask no detectado', 'error');
+            }
+        });
+
+        // Subir reporte a IPFS
+        document.getElementById('uploadBtn').addEventListener('click', async function () {
+            if (!connected) {
+                updateStatus('Primero conecta tu billetera Ethereum', 'error');
+                return;
+            }
+
+            ipfs = await Ipfs.create();
+            const result = await ipfs.add('Reporte de validación de proyecto');
+            updateStatus(`Reporte subido a IPFS: ${result.path}`, 'success');
+        });
+
+        // Actualizar estado en la UI
+        function updateStatus(message, type) {
+            const statusText = document.getElementById('statusText');
+            statusText.textContent = `Estado: ${message}`;
+            statusText.className = type;
+        }
+    </script>
+</body>
+</html>
