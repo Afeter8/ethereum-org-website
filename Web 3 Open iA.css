@@ -1,0 +1,35 @@
+import Web3 from 'web3';
+import React, { useState } from 'react';
+
+const web3 = new Web3(window.ethereum);
+
+const MessageApp = () => {
+  const [message, setMessage] = useState('');
+  const [account, setAccount] = useState('');
+
+  const connectWallet = async () => {
+    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    setAccount(accounts[0]);
+  };
+
+  const sendMessage = async () => {
+    const messageHash = web3.utils.sha3(message);
+    const contract = new web3.eth.Contract(contractABI, contractAddress);
+    await contract.methods.registerMessage(messageHash).send({ from: account });
+  };
+
+  return (
+    <div>
+      <button onClick={connectWallet}>Conectar Wallet</button>
+      <input
+        type="text"
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        placeholder="Escribe tu mensaje"
+      />
+      <button onClick={sendMessage}>Enviar Mensaje</button>
+    </div>
+  );
+};
+
+export default MessageApp;
