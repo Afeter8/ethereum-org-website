@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Sistema Descentralizado Inmueble + IA Star Tigo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #eee;
+      text-align: center;
+      padding: 20px;
+    }
+    .inmueble {
+      margin: 0 auto;
+      padding: 20px;
+      background: #222;
+      border: 2px solid #0f0;
+      border-radius: 10px;
+      width: 300px;
+    }
+    .alerta {
+      color: #ff0;
+      font-weight: bold;
+    }
+    .seguro {
+      color: #0f0;
+    }
+    button {
+      padding: 10px 20px;
+      margin-top: 15px;
+      background: #0f0;
+      border: none;
+      cursor: pointer;
+      color: #000;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Star Tigo Antivirus IA – Inmueble Autónomo</h1>
+  <p>Revisión automática de seguridad descentralizada</p>
+
+  <div class="inmueble" id="inmueble">
+    <h2>Inmueble: Torre A1</h2>
+    <p>Estado de Seguridad: <span id="estado" class="seguro">Revisado</span></p>
+    <p>Última Revisión: <span id="revision">Sin revisar</span></p>
+    <p>Modo: <span id="modo">Automático</span></p>
+  </div>
+
+  <button onclick="iniciarRevision()">Iniciar Revisión por IA</button>
+
+  <script>
+    let revisando = false;
+
+    function iniciarRevision() {
+      if (revisando) return;
+      revisando = true;
+
+      setInterval(() => {
+        const estadoElem = document.getElementById('estado');
+        const revisionElem = document.getElementById('revision');
+        const now = new Date().toLocaleTimeString();
+
+        // Simulación de escaneo inteligente con IA
+        const amenaza = Math.random() < 0.25; // 25% probabilidad de amenaza
+
+        if (amenaza) {
+          estadoElem.textContent = "Alerta: amenaza detectada";
+          estadoElem.className = "alerta";
+          console.warn("IA Star Tigo detectó actividad anómala en el inmueble.");
+        } else {
+          estadoElem.textContent = "Revisado – Seguro";
+          estadoElem.className = "seguro";
+          console.log("Star Tigo ejecutó revisión completa. Todo en orden.");
+        }
+
+        revisionElem.textContent = now;
+      }, 5000); // cada 5 segundos
+    }
+  </script>
+
+</body>
+</html>
