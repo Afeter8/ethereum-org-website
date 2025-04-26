@@ -1,0 +1,87 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Star Tigo OS Core</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0a0a0a;
+      color: #00ffcc;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #001f1f;
+      padding: 20px;
+      text-align: center;
+      border-bottom: 2px solid #00ffcc;
+    }
+    h1 {
+      margin: 0;
+    }
+    section {
+      padding: 20px;
+    }
+    .module {
+      background: #002828;
+      margin-bottom: 20px;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px #00ffcc44;
+    }
+    .module h2 {
+      margin-top: 0;
+    }
+    footer {
+      background: #001f1f;
+      padding: 10px;
+      text-align: center;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Star Tigo OS Core - Sistema Descentralizado</h1>
+    <p>Identidad. Seguridad. Soberanía Digital.</p>
+  </header>  <section>
+    <div class="module">
+      <h2>Identificador Star Tigo (TigoNumCodeX)</h2>
+      <p id="code-output"></p>
+    </div><div class="module">
+  <h2>Protección de Código (CSS, JS, JSON, HTML)</h2>
+  <p>Todo el contenido está protegido con lógica de rotación de IP y validación IA descentralizada.</p>
+</div>
+
+<div class="module">
+  <h2>IA Legal y Constitución Universal</h2>
+  <p>Incluye acceso a artículos de constitución global por país con traducción automática.</p>
+</div>
+
+<div class="module">
+  <h2>Sistema de Pagos y Tokens</h2>
+  <p>Integrado con wallets descentralizadas, tokens Star Tigo y bancos autorizados.</p>
+</div>
+
+<div class="module">
+  <h2>Comunicación Descentralizada</h2>
+  <p>Conectado mediante WebRTC + IPFS + Tor opcional.</p>
+</div>
+
+<div class="module">
+  <h2>Protección Biométrica + IA</h2>
+  <p>Validación por geolocalización, rostro, voz o firma digital automática.</p>
+</div>
+
+  </section>  <footer>
+    Sistema Star Tigo OS Core - Red Autónoma IA - 2025
+  </footer>  <script>
+    function generarTigoNumero(pais = "MX", region = "05", funcion = "TXN") {
+      const codigo = Math.random().toString(36).substring(2, 8).toUpperCase();
+      const firma = Math.random().toString(36).substring(2, 6).toUpperCase();
+      return `STX-${pais}-${region}-${funcion}-${codigo}-${firma}`;
+    }
+    document.getElementById("code-output").innerText = generarTigoNumero();
+  </script></body>
+</html>
