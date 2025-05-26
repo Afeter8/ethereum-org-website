@@ -1,0 +1,8 @@
+{
+  "name": "star-tigo-eth",
+  "version": "1.0.0",
+  "description": "CriptoBanco descentralizado Star Tigo ETH",
+  "dependencies": {
+    "ethers": "^5.7.2"
+  }
+}
