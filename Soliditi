@@ -1,0 +1,36 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract TigoCriptoBanco {
+    address public owner;
+
+    enum TokenType { TIGO, STARTIGO, TIGOSTAR }
+
+    mapping(address => mapping(TokenType => uint256)) public balances;
+
+    event Transferencia(address indexed from, address indexed to, TokenType token, uint256 amount);
+
+    modifier onlyOwner() {
+        require(msg.sender == owner, "No autorizado");
+        _;
+    }
+
+    constructor() {
+        owner = msg.sender;
+    }
+
+    function emitir(address to, TokenType token, uint256 cantidad) public onlyOwner {
+        balances[to][token] += cantidad;
+    }
+
+    function transferir(TokenType token, address to, uint256 cantidad) public {
+        require(balances[msg.sender][token] >= cantidad, "Saldo insuficiente");
+        balances[msg.sender][token] -= cantidad;
+        balances[to][token] += cantidad;
+        emit Transferencia(msg.sender, to, token, cantidad);
+    }
+
+    function balanceOf(address user, TokenType token) public view returns (uint256) {
+        return balances[user][token];
+    }
+}
