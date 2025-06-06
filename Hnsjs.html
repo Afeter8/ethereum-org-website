@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tigo IA-Recover Ghost - Autoreparación y Blockchain</title>
+  <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/ipfs-http-client/dist/index.min.js"></script>
+  <style>
+    body {display:none;}
+  </style>
+</head>
+<body>
+  <!-- Tigo IA-Recover Ghost: sistema de autoreparación, cifrado, blockchain e IPFS -->
+
+  <script>
+  // --------------------- CONFIGURACIÓN ------------------------
+  const archivoLocalPath = '/config/proyecto.json'; // Ruta local simulada
+  const llaveCifrado = 'TigoSecretKey_2025!'; // Clave AES para cifrado local y blockchain
+
+  // Hash esperado SHA-256 (hex) para validar integridad
+  const hashEsperado = 'f5d1278e8109edd94e1e4197e04873b9'; // Cambiar al hash correcto
+
+  // Config Ethereum
+  const contratoDireccion = '0x1234567890abcdef1234567890abcdef12345678';
+  const contratoABI = [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "obtenerRespaldo",
+      "outputs": [{ "name": "", "type": "string" }],
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [{ "name": "nuevoRespaldo", "type": "string" }],
+      "name": "actualizarRespaldo",
+      "outputs": [],
+      "type": "function"
+    }
+  ];
+
+  // IPFS Config
+  const ipfsNode = 'https://ipfs.infura.io:5001'; // Nodo público Infura IPFS
+
+  // -------- FUNCIONES AUXILIARES ------------
+
+  // Calcular SHA-256 (hex) de un texto
+  async function sha256Hex(texto) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(texto);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  // Cifrar texto con AES
+  function cifrarAES(texto, clave) {
+    return CryptoJS.AES.encrypt(texto, clave).toString();
+  }
+
+  // Descifrar texto con AES
+  function descifrarAES(cifrado, clave) {
+    const bytes = CryptoJS.AES.decrypt(cifrado, clave);
+    return bytes.toString(CryptoJS.enc.Utf8);
+  }
+
+  // Simular lectura local de archivo (en entorno real, usar API adecuada)
+  async function leerArchivoLocal() {
+    // Simulación: recupera del localStorage para demo
+    return localStorage.getItem('proyecto.json') || '';
+  }
+
+  // Simular escritura local de archivo
+  async function escribirArchivoLocal(contenido) {
+    localStorage.setItem('proyecto.json', contenido);
+  }
+
+  // Subir respaldo cifrado a IPFS
+  async function subirAIPFS(data) {
+    try {
+      const ipfs = window.IpfsHttpClient.create({ url: ipfsNode });
+      const { cid } = await ipfs.add(data);
+      return cid.toString();
+    } catch (e) {
+      console.error('[IA-GHOST] Error IPFS upload:', e);
+      return null;
+    }
+  }
+
+  // Descargar desde IPFS
+  async function descargarDesdeIPFS(cid) {
+    try {
+      const ipfs = window.IpfsHttpClient.create({ url: ipfsNode });
+      let contenido = '';
+      for await (const chunk of ipfs.cat(cid)) {
+        contenido += new TextDecoder().decode(chunk);
+      }
+      return contenido;
+    } catch (e) {
+      console.error('[IA-GHOST] Error IPFS download:', e);
+      return null;
+    }
+  }
+
+  // ----------------- INICIALIZAR WEB3 Y CONTRATO -------------------
+
+  let web3;
+  let contrato;
+  let cuenta;
+
+  async function initWeb3() {
+    if (window.ethereum) {
+      web3 = new Web3(window.ethereum);
+      try {
+        await window.ethereum.request({ method: 'eth_requestAccounts' });
+        const cuentas = await web3.eth.getAccounts();
+        cuenta = cuentas[0];
+        contrato = new web3.eth.Contract(contratoABI, contratoDireccion);
+        console.log('[IA-GHOST] Web3 inicializado con cuenta', cuenta);
+      } catch (e) {
+        console.error('[IA-GHOST] Error al obtener cuenta Ethereum:', e);
+      }
+    } else {
+      console.error('[IA-GHOST] No se detectó Ethereum provider');
+    }
+  }
+
+  // ------------------ FUNCIONES PRINCIPALES ----------------------
+
+  async function verificarIntegridadYReparar() {
+    try {
+      const contenidoActual = await leerArchivoLocal();
+      const hashActual = await sha256Hex(contenidoActual);
+
+      if (hashActual !== hashEsperado) {
+        console.warn('[IA-GHOST] Archivo alterado o corrupto detectado. Iniciando recuperación...');
+
+        if (!contrato) {
+          await initWeb3();
+        }
+
+        if (contrato) {
+          // Obtener respaldo cifrado desde blockchain (simulación real)
+          let respaldoCifrado = await contrato.methods.obtenerRespaldo().call();
+
+          if (!respaldoCifrado) {
+            console.error('[IA-GHOST] No hay respaldo en blockchain.');
+            return;
+          }
+
+          // Descifrar respaldo
+          let respaldoDescifrado = descifrarAES(respaldoCifrado, llaveCifrado);
+
+          // Guardar respaldo localmente (simulado)
+          await escribirArchivoLocal(respaldoDescifrado);
+          console.log('[IA-GHOST] Respaldo restaurado desde blockchain.');
+
+          // Opcional: subir respaldo descifrado a IPFS para redundancia
+          const cid = await subirAIPFS(respaldoCifrado);
+          if (cid) {
+            console.log('[IA-GHOST] Respaldo cifrado subido a IPFS:', cid);
+          }
+        } else {
+          console.error('[IA-GHOST] No se pudo inicializar web3 para restaurar.');
+        }
+      } else {
+        console.log('[IA-GHOST] Archivo íntegro, sin reparaciones necesarias.');
+      }
+    } catch (e) {
+      console.error('[IA-GHOST] Error en verificación o reparación:', e);
+    }
+  }
+
+  // ----------------- FUNCION DE SIMULACION ------------------------
+
+  async function simularAlteracion() {
+    const contenido = await leerArchivoLocal();
+    let corrupto = contenido.split('').reverse().join(''); // Simula corrupción simple
+    await escribirArchivoLocal(corrupto);
+    console.log('[IA-GHOST] Archivo local alterado para simulación.');
+  }
+
+  async function simularActualizarBlockchain(nuevoContenido) {
+    if (!contrato) await initWeb3();
+    if (!contrato) return;
+
+    const respaldoCifrado = cifrarAES(nuevoContenido, llaveCifrado);
+    try {
+      const gas = await contrato.methods.actualizarRespaldo(respaldoCifrado).estimateGas({ from: cuenta });
+      const tx = await contrato.methods.actualizarRespaldo(respaldoCifrado).send({ from: cuenta, gas });
+      console.log('[IA-GHOST] Respaldo actualizado en blockchain.', tx.transactionHash);
+    } catch (e) {
+      console.error('[IA-GHOST] Error al actualizar blockchain:', e);
+    }
+  }
+
+  // ----------------- EJECUCION AUTOMATICA -------------------------
+
+  // Iniciar verificación y reparación cíclica cada 10 segundos
+  setInterval(verificarIntegridadYReparar, 10000);
+  verificarIntegridadYReparar();
+
+  // ---------------------------------------------------------------
+  // Opcional: para pruebas y simulación puedes descomentar estas líneas
+  // setTimeout(simularAlteracion, 5000);
+  // setTimeout(() => simularActualizarBlockchain('{"datos":"nuevos datos ejemplo"}'), 20000);
+  // ---------------------------------------------------------------
+
+  </script>
+</body>
+</html>
