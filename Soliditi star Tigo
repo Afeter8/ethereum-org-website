@@ -1,0 +1,43 @@
+// SPDX-License-Identifier: MIT pragma solidity ^0.8.0;
+
+contract TigoRecovery { address public owner; string private respaldo; mapping(address => bool) public autorizados; event RespaldoActualizado(address indexed por); event Autorizado(address indexed cuenta); event NoAutorizado(address indexed cuenta);
+
+constructor(string memory _respaldoInicial) {
+    owner = msg.sender;
+    respaldo = _respaldoInicial;
+    autorizados[msg.sender] = true;
+}
+
+modifier soloAutorizado() {
+    require(autorizados[msg.sender], "No autorizado");
+    _;
+}
+
+function obtenerRespaldo() public view returns (string memory) {
+    return respaldo;
+}
+
+function actualizarRespaldo(string memory nuevoRespaldo) public soloAutorizado {
+    respaldo = nuevoRespaldo;
+    emit RespaldoActualizado(msg.sender);
+}
+
+function autorizar(address cuenta) public {
+    require(msg.sender == owner, "Solo el propietario puede autorizar");
+    autorizados[cuenta] = true;
+    emit Autorizado(cuenta);
+}
+
+function revocarAutorizacion(address cuenta) public {
+    require(msg.sender == owner, "Solo el propietario puede revocar");
+    autorizados[cuenta] = false;
+    emit NoAutorizado(cuenta);
+}
+
+function transferirPropiedad(address nuevoPropietario) public {
+    require(msg.sender == owner, "Solo el propietario puede transferir");
+    owner = nuevoPropietario;
+}
+
+}
+
