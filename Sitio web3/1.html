@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Activación IA Ethereum</title>
+  <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+</head>
+<body>
+  <h1>Activación Automática IA</h1>
+  <button onclick="activar()">🔓 Activar Sistema</button>
+  <button onclick="estado()">📡 Ver Estado</button>
+  <div id="respuesta"></div>
+
+  <script>
+    const contrato = "DIRECCION_DEL_CONTRATO"; // Reemplazar
+    const abi = [/* Pega el ABI del contrato aquí */];
+
+    const web3 = new Web3(window.ethereum);
+    const contratoIA = new web3.eth.Contract(abi, contrato);
+
+    async function activar() {
+      const cuentas = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      const cuenta = cuentas[0];
+      await contratoIA.methods.activarSistema().send({ from: cuenta });
+      document.getElementById("respuesta").innerText = "✅ Activado correctamente";
+    }
+
+    async function estado() {
+      const activo = await contratoIA.methods.estado().call();
+      document.getElementById("respuesta").innerText = "⛓️ Estado: " + (activo ? "Activo" : "Inactivo");
+    }
+  </script>
+</body>
+</html>
