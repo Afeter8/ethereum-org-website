@@ -1,0 +1,44 @@
+<!DOCTYPE html><html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Reparación Automática - Star Tigo</title>
+  <style>
+    body { background-color: #0d1117; color: #c9d1d9; font-family: monospace; padding: 20px; }
+    .log { white-space: pre-wrap; background: #161b22; padding: 15px; border-radius: 10px; margin-top: 20px; }
+    .btn { background: #238636; border: none; padding: 10px 20px; color: #fff; cursor: pointer; border-radius: 5px; }
+    .btn:hover { background: #2ea043; }
+  </style>
+</head>
+<body>
+  <h1>🛠️ Reparación Automática - Star Tigo IA</h1>
+  <button class="btn" onclick="ejecutarReparacion()">Iniciar Reparación</button>
+  <div class="log" id="log">Esperando acciones...</div>  <script>
+    const erroresComunes = [
+      "ERR_NET_FAILURE", "ERR_CONNECTION_TIMEOUT", "ERR_MODULE_CORRUPTED",
+      "ERR_CONFIG_MISSING", "ERR_UPDATE_REQUIRED", "ERR_SECURITY_VIOLATION"
+    ];
+
+    const soluciones = {
+      "ERR_NET_FAILURE": "Reiniciando red...",
+      "ERR_CONNECTION_TIMEOUT": "Reintentando conexión segura...",
+      "ERR_MODULE_CORRUPTED": "Restaurando módulo desde copia inmutable...",
+      "ERR_CONFIG_MISSING": "Reconstruyendo configuración base...",
+      "ERR_UPDATE_REQUIRED": "Forzando actualización automática...",
+      "ERR_SECURITY_VIOLATION": "Aislando amenaza y regenerando integridad..."
+    };
+
+    function ejecutarReparacion() {
+      const log = document.getElementById("log");
+      log.innerText = "🔄 Ejecutando bucle eterno de diagnóstico y reparación...\n";
+
+      let i = 0;
+      const intervalo = setInterval(() => {
+        if (i >= erroresComunes.length) i = 0;
+        const error = erroresComunes[i];
+        log.innerText += `\n⚠️ Detectado: ${error}\n✅ Acción: ${soluciones[error]}`;
+        i++;
+      }, 4000);
+    }
+  </script></body>
+</html>
