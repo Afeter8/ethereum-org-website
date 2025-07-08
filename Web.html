@@ -1,0 +1,19 @@
+<script>
+const SYSTEM_OWNER = "Fernando Guadalupe Mendez Espinoza";
+const AUTO_DEFENSE_ENABLED = true;
+const IA_HASH_NAME = "sha512-ABC123...";
+const TOR_PROXIES = ["onion1", "onion2", "obfs4bridge"];
+
+function iniciarDefensa() {
+  if (AUTO_DEFENSE_ENABLED && SYSTEM_OWNER === "Fernando Guadalupe Mendez Espinoza") {
+    console.log("🛡️ Defensa IA activada.");
+    activarFirewall();
+    iniciarEscaneoTOR();
+    verificarIntegridad();
+  } else {
+    console.warn("🚫 Acceso no autorizado.");
+    bloquearSistema();
+  }
+}
+window.onload = iniciarDefensa;
+</script>
