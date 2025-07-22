@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>🌐 Activación Global IA - FGME</title>
+  <script>
+    const dueño = "Fernando Guadalupe Méndez Espinoza";
+    const paisesSoportados = ["MX", "CO", "AR", "ES", "CL", "BR", "PE", "VE", "US", "FR", "DE"];
+    const regionesCulturales = {
+      "MX": "Latinoamérica - Español",
+      "US": "Norteamérica - Inglés",
+      "FR": "Europa Occidental - Francés",
+      "BR": "Sudamérica - Portugués"
+    };
+
+    async function detectarRegión() {
+      try {
+        const res = await fetch("https://ipapi.co/json/");
+        const datos = await res.json();
+        const pais = datos.country;
+        const idioma = datos.languages;
+
+        if (paisesSoportados.includes(pais)) {
+          console.log(`🌍 Región detectada: ${regionesCulturales[pais] || pais}`);
+          activarCodigoIA(pais, idioma);
+        } else {
+          console.warn("🚫 País no autorizado por FGME");
+        }
+      } catch {
+        console.error("❌ Error al detectar región.");
+      }
+    }
+
+    function activarCodigoIA(pais, idioma) {
+      const fecha = new Date().toISOString();
+      const token = btoa(pais + idioma + dueño + fecha);
+
+      console.log(`✅ Activación FGME: ${token}`);
+      ejecutarTodosLosModulos(pais, idioma, token);
+    }
+
+    function ejecutarTodosLosModulos(pais, idioma, token) {
+      // Activar nodos, seguridad, radio, pagos, comunicación
+      const modulos = [
+        "Red StarTigo/TigoStar",
+        "Nodos Mesh CPE210",
+        "IA Seguridad Global",
+        "Actualizador Blockchain",
+        "Identidad Cultural y Lenguaje",
+        "Control FM/Radio",
+        "Sistema de Pagos Éticos IA",
+        "Protector Código Descentralizado"
+      ];
+
+      modulos.forEach(m => {
+        console.log(`🧠 Ejecutando módulo: ${m} para ${pais} - ${idioma}`);
+        registrarEventoGlobal(pais, m, token);
+      });
+    }
+
+    function registrarEventoGlobal(pais, modulo, token) {
+      const log = {
+        modulo,
+        país: pais,
+        hora: new Date().toISOString(),
+        autorizado: dueño,
+        token
+      };
+      console.log("🔐 Registro:", log);
+      // Aquí se puede subir a IPFS o guardar en cadena Ethereum
+    }
+
+    window.onload = () => {
+      alert("🌐 Activación Global Descentralizada FGME en curso...");
+      detectarRegión();
+    };
+  </script>
+</head>
+<body style="background:#000;color:#0f0;font-family:monospace">
+  <h1>🌐 Activador IA Global Inmutable</h1>
+  <p>🔐 Exclusivo de: <strong>Fernando Guadalupe Méndez Espinoza</strong></p>
+  <p>🗺️ Identificando región cultural, lenguaje y país...</p>
+  <p>🤖 Ejecutando red IA mundial sin intervención humana</p>
+</body>
+</html>
