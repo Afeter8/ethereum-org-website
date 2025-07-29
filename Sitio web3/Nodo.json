@@ -1,0 +1,7 @@
+{
+  "nodos": [
+    {"pais": "MX", "ip": "192.168.10.254", "ia": true},
+    {"pais": "CO", "ip": "node2.star", "ia": true}
+  ],
+  "frecuencia_sync": "cada 5 min"
+}
