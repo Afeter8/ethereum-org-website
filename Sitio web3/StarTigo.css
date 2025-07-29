@@ -1,0 +1,103 @@
+/* ===========================================================
+   Sistema de Defensa IA Global (StarTigo y TigoStar)
+   Autor: Fernando Guadalupe Mendez Espinoza
+   Estado: Inmutable, Seguro, Autónomo, en Bucle Eterno
+   =========================================================== */
+
+/* ⚠️ Seguridad visual de código rotativo */
+body, html {
+  margin: 0;
+  padding: 0;
+  background-color: #0a0a0a;
+  color: #00ffcc;
+  font-family: 'Courier New', Courier, monospace;
+  user-select: none;
+}
+
+/* 🌐 Sistema de alerta IA */
+.alerta-sistema {
+  background-color: #ff0000;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+  border: 2px solid #ff6600;
+  animation: blinkAlerta 1s infinite alternate;
+}
+
+/* 🔁 Animación de rotación constante */
+@keyframes rotacionInmutable {
+  0% { transform: rotate(0deg); opacity: 0.9; }
+  100% { transform: rotate(360deg); opacity: 1; }
+}
+
+/* 🧠 Estilo IA activa */
+.ia-activa {
+  border: 3px solid #00ffcc;
+  box-shadow: 0 0 20px #00ffcc;
+  animation: pulsoIA 2s infinite;
+}
+
+@keyframes pulsoIA {
+  0% { box-shadow: 0 0 5px #00ffcc; }
+  50% { box-shadow: 0 0 25px #00ffcc; }
+  100% { box-shadow: 0 0 5px #00ffcc; }
+}
+
+/* 🔐 Zona protegida */
+.zona-segura {
+  background-color: #003333;
+  color: #ccffcc;
+  border: 2px dashed #66ffcc;
+  padding: 20px;
+  margin: 20px;
+}
+
+/* ⚙️ Indicador de código inmutable activo */
+.inmutable-flag::before {
+  content: '🔒 Código Inmutable';
+  display: block;
+  background: linear-gradient(90deg, #003300, #006600);
+  color: #ffffff;
+  font-weight: bold;
+  padding: 5px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* 🛰️ Nodo rotativo */
+.nodo-rotativo {
+  background-color: #000033;
+  color: #00ffff;
+  padding: 15px;
+  font-size: 12px;
+  border-left: 4px solid #00ffff;
+  margin-bottom: 5px;
+}
+
+/* 🧬 Protección biométrica visual */
+.biometrico-activo {
+  background-color: #220022;
+  border: 2px solid #ff00ff;
+  color: #ffeeff;
+  animation: blinkBiometrico 2s infinite alternate;
+}
+
+@keyframes blinkBiometrico {
+  0% { opacity: 1; }
+  100% { opacity: 0.7; }
+}
+
+/* 🧩 Protección de código inverso */
+html::after {
+  content: "⚠️ Protección IA Activa - Código Monitorizado";
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #222;
+  color: #ffcc00;
+  font-size: 10px;
+  text-align: center;
+  padding: 2px;
+  z-index: 9999;
+}
