@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>StarTigo - Conexión Automática TP-Link CPE210</title>
+<style>
+  body { font-family: Arial, sans-serif; background: #0a0a23; color: #eee; }
+  #status { margin: 20px; padding: 10px; background: #111; border-radius: 8px; }
+  #log { margin: 20px; height: 250px; overflow-y: auto; background: #111; padding: 10px; border-radius: 8px; font-family: monospace; font-size: 12px;}
+</style>
+</head>
+<body>
+
+<h2>StarTigo - Sistema Automático TP-Link CPE210</h2>
+<div id="status">Estado: <span id="estado">Iniciando...</span></div>
+<div id="log"></div>
+
+<script>
+(() => {
+  // Variables inmutables
+  const CPE_IP = "192.168.10.254";
+  const CPE_USER = "admin";
+  const CPE_PASS = "admin";
+  const SSID_OBJETIVO = "startigo_ap1";
+
+  const estado = document.getElementById("estado");
+  const log = document.getElementById("log");
+
+  // Función para loguear con timestamp
+  function loguear(texto) {
+    const tiempo = new Date().toLocaleTimeString();
+    log.innerText += `[${tiempo}] ${texto}\n`;
+    log.scrollTop = log.scrollHeight;
+  }
+
+  // Función para realizar llamada fetch con autenticación básica
+  async function testConexionCPE() {
+    try {
+      const auth = "Basic " + btoa(CPE_USER + ":" + CPE_PASS);
+      const res = await fetch(`http://${CPE_IP}/userRpm/SystemStatisticRpm.htm`, {
+        method: "GET",
+        headers: { "Authorization": auth, "Cache-Control": "no-cache" },
+        mode: "cors"
+      });
+      if (res.ok) {
+        const texto = await res.text();
+        if (texto.includes(SSID_OBJETIVO)) {
+          return true;
+        }
+      }
+      return false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  // Simular IP rotativa segura
+  function ipRotativa() {
+    // Simple random IP dentro rango privado 192.168.10.x
+    return `192.168.10.${Math.floor(Math.random() * 250 + 2)}`;
+  }
+
+  // Activar IA (simulado)
+  function activarIA(ip) {
+    loguear(`🤖 IA activada en IP: ${ip}`);
+    estado.innerText = `IA activa en IP ${ip}`;
+  }
+
+  // Bucle de chequeo continuo sin intervención humana
+  async function loopConexion() {
+    while(true) {
+      estado.innerText = "Verificando conexión al TP-Link CPE210...";
+      const conectado = await testConexionCPE();
+
+      if (conectado) {
+        loguear("✅ Conexión al TP-Link CPE210 establecida correctamente");
+        const ipSimulada = ipRotativa();
+        activarIA(ipSimulada);
+      } else {
+        loguear("❌ No se pudo conectar con TP-Link CPE210. Reintentando...");
+        estado.innerText = "Error conexión TP-Link. Reintentando...";
+      }
+      await new Promise(r => setTimeout(r, 15000)); // espera 15 seg antes siguiente intento
+    }
+  }
+
+  // Inicio del sistema
+  loguear("Sistema iniciado...");
+  estado.innerText = "Sistema iniciado. Iniciando verificación...";
+  loopConexion();
+
+})();
+</script>
+
+</body>
+</html>
