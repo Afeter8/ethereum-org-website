@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>StarTigo Defensa Global IA</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="robots" content="noindex, nofollow">
+  <style>
+    body { background: #000; color: #0f0; font-family: monospace; }
+    .status { padding: 1rem; border: 2px solid #0f0; margin: 1rem; }
+  </style>
+</head>
+<body>
+  <div class="status" id="estado">Iniciando sistema de defensa StarTigo...</div>
+
+  <script>
+  const hashSafe = "ac9f..."; // hash SHA256 de código original
+  const files = {
+    html: `<!DOCTYPE html><html>...</html>`,
+    css: `body{color:#0f0;background:#000}`,
+    js: `console.log("Defensa IA activada");`,
+    json: `{"sistema":"activo"}`,
+    py: `print("IA Protección Activa")`,
+    java: `class Defensa{public static void main(String[] args){}}`
+  };
+
+  function rotarCodigo() {
+    const tipos = Object.keys(files);
+    let actual = 0;
+    setInterval(() => {
+      const tipo = tipos[actual % tipos.length];
+      console.log("Rotando código:", tipo);
+      document.getElementById("estado").innerText = `Código activo: ${tipo}`;
+      actual++;
+    }, 5000); // rotación cada 5 segundos
+  }
+
+  function verificarIntegridad() {
+    // Simulación de verificación (hash comparado)
+    const estado = (hashSafe.length > 0); // Suplanta SHA256 real
+    if (!estado) location.href = "error.html";
+  }
+
+  function iniciarSistema() {
+    verificarIntegridad();
+    rotarCodigo();
+    console.log("Sistema iniciado en bucle eterno.");
+  }
+
+  iniciarSistema();
+  </script>
+</body>
+</html>
